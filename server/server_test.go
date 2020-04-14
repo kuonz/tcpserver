@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"testing"
@@ -10,14 +9,14 @@ import (
 
 func MockClient() {
 
-	log.Println("[client] mock client starting ...")
+	log.Printf("[client] mock client starting ...\n")
 
 	time.Sleep(3 * time.Second)
 
 	conn, err := net.Dial("tcp", "127.0.0.1:60000")
 
 	if err != nil {
-		fmt.Println("[client] mock client start err: ", err.Error())
+		log.Printf("[client] mock client start err: %s\n", err.Error())
 		return
 	}
 
@@ -25,7 +24,7 @@ func MockClient() {
 		_, err := conn.Write([]byte("[client] Hello World"))
 
 		if err != nil {
-			fmt.Println("[client] mock client write error: ", err.Error())
+			log.Printf("[client] mock client write error: %s\n", err.Error())
 			return
 		}
 
@@ -33,11 +32,11 @@ func MockClient() {
 		cnt, err := conn.Read(buf)
 
 		if err != nil {
-			fmt.Println("[client] mock client read error: ", err.Error())
+			log.Printf("[client] mock client read error: %s\n", err.Error())
 			return
 		}
 
-		fmt.Printf("[client] server call back : %s, cnt = %d", string(buf), cnt)
+		log.Printf("[client] server call back : %s, cnt = %d\n", string(buf), cnt)
 
 		time.Sleep(1 * time.Second)
 	}

@@ -34,7 +34,7 @@ func (s *Server) Run() {
 
 	s.Serve()
 
-	log.Println("[server] server has started ...")
+	log.Printf("[server] server has started ...\n")
 
 	wg.Wait()
 }
@@ -46,7 +46,7 @@ func (s *Server) Serve() {
 	addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IPAddress, s.Port))
 
 	if err != nil {
-		log.Println("[server] server serve failed, err: ", err.Error())
+		log.Printf("[server] server serve failed, err: %s\n", err.Error())
 		return
 	}
 
@@ -54,7 +54,7 @@ func (s *Server) Serve() {
 	listener, err := net.ListenTCP(s.IPVersion, addr)
 
 	if err != nil {
-		log.Printf("[server] liesten err: %s", err.Error())
+		log.Printf("[server] liesten err: %s\n", err.Error())
 		return
 	}
 
@@ -64,7 +64,7 @@ func (s *Server) Serve() {
 			conn, err := listener.AcceptTCP()
 
 			if err != nil {
-				log.Printf("[server] accept tcp failed, err: %s", err.Error())
+				log.Printf("[server] accept tcp failed, err: %s\n", err.Error())
 				continue
 			}
 
@@ -75,7 +75,7 @@ func (s *Server) Serve() {
 
 // Stop ...
 func (s *Server) Stop() {
-	log.Println("server stop, release resources ...")
+	log.Printf("[server] server stop, release resources ...\n")
 }
 
 func temp(conn *net.TCPConn) {
@@ -85,16 +85,16 @@ func temp(conn *net.TCPConn) {
 		cnt, err := conn.Read(buf)
 
 		if err != nil {
-			log.Println("process tcp conn failed, err: ", err.Error())
+			log.Printf("[server] process tcp conn failed, err: %s\n", err.Error())
 			return
 		}
 
-		log.Printf("server received conn, data: %s", string(buf[:cnt]))
+		log.Printf("[server] server received conn, data: %s\n", string(buf[:cnt]))
 
 		_, err = conn.Write(buf[:cnt])
 
 		if err != nil {
-			log.Println("server response write failed, err: ", err.Error())
+			log.Printf("server response write failed, err: %s\n", err.Error())
 		}
 	}
 }
